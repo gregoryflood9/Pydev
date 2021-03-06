@@ -526,7 +526,8 @@ public class MatchImportsVisitor extends VisitorBase {
             ASTEntry renameAstEntry, int beginColumn, int beginLine) {
         ArrayList<IDefinition> definitions = new ArrayList<>();
         try {
-            PyRefactoringFindDefinition.findActualDefinition(monitor, this.currentModule,
+            boolean acceptTypeshed = true;
+            PyRefactoringFindDefinition.findActualDefinition(monitor, acceptTypeshed, this.currentModule,
                     nameInImport, definitions, beginLine,
                     beginColumn, nature, this.completionState);
             for (IDefinition iDefinition : definitions) {

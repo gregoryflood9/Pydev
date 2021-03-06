@@ -120,6 +120,8 @@ public class RefactoringRequest extends DecoratableObject {
 
     private List<IDefinition> actualDefinitions;
 
+    public boolean acceptTypeshed = true;
+
     /**
      * If the file is passed, we also set the document automatically
      * @param file the file correspondent to this request

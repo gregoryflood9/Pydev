@@ -143,7 +143,9 @@ public final class ArgumentsChecker {
             ArrayList<IDefinition> definition = new ArrayList<IDefinition>();
             SimpleNode ast = nameToken.getAst();
             try {
-                PyRefactoringFindDefinition.findActualDefinition(null, this.current, rep, definition, ast.beginLine,
+                boolean acceptTypeshed = true;
+                PyRefactoringFindDefinition.findActualDefinition(null, acceptTypeshed, this.current, rep, definition,
+                        ast.beginLine,
                         ast.beginColumn, this.nature, this.completionCache);
             } catch (Exception e) {
                 Log.log(e);
@@ -176,7 +178,9 @@ public final class ArgumentsChecker {
                                 callingBoundMethod = true;
                                 String withoutLast = FullRepIterable.getWithoutLastPart(rep);
                                 ArrayList<IDefinition> definition2 = new ArrayList<IDefinition>();
-                                PyRefactoringFindDefinition.findActualDefinition(null, this.current, withoutLast,
+                                boolean acceptTypeshed = true;
+                                PyRefactoringFindDefinition.findActualDefinition(null, acceptTypeshed, this.current,
+                                        withoutLast,
                                         definition2, -1, -1, this.nature, this.completionCache);
 
                                 for (IDefinition iDefinition2 : definition2) {

@@ -107,6 +107,7 @@ public class InterpreterInfo implements IInterpreterInfo {
      */
     private String[] builtinsCache;
     private Map<String, File> predefinedBuiltinsCache;
+    private Map<String, File> typeshedCache;
 
     /**
      * module management for the system is always binded to an interpreter (binded in this class)
@@ -1948,7 +1949,39 @@ public class InterpreterInfo implements IInterpreterInfo {
             }
         }
 
-        return this.predefinedBuiltinsCache.get(moduleName);
+        if (this.typeshedCache == null) {
+            this.typeshedCache = new HashMap<String, File>();
+            try {
+                File typeshedPath = CorePlugin.getTypeshedPath();
+                File f = new File(typeshedPath, "stdlib");
+                if (f.exists()) {
+                    File[] predefs = f.listFiles(new FilenameFilter() {
+
+                        //Only accept names ending with .pypredef in the passed dirs
+                        @Override
+                        public boolean accept(File dir, String name) {
+                            return name.endsWith(".pyi");
+                        }
+                    });
+
+                    if (predefs != null) {
+                        for (File file : predefs) {
+                            String n = file.getName();
+                            String modName = n.substring(0, n.length() - (".pyi".length()));
+                            this.typeshedCache.put(modName, file);
+                        }
+                    }
+                }
+            } catch (CoreException e) {
+                Log.log(e);
+            }
+        }
+
+        File ret = this.predefinedBuiltinsCache.get(moduleName);
+        if (ret == null) {
+            ret = this.typeshedCache.get(moduleName);
+        }
+        return ret;
     }
 
     public void removePredefinedCompletionPath(String item) {

@@ -68,8 +68,8 @@ public class RefactorerFinds {
             if (module != null) {
 
                 ArrayList<IDefinition> foundDefs = new ArrayList<IDefinition>();
-                PyRefactoringFindDefinition.findActualDefinition(request.getMonitor(), module, n, foundDefs, line, col,
-                        nature, completionCache);
+                PyRefactoringFindDefinition.findActualDefinition(request.getMonitor(), request.acceptTypeshed, module,
+                        n, foundDefs, line, col, nature, completionCache);
 
                 if (foundDefs.size() > 0) {
                     definitions.addAll(foundDefs);

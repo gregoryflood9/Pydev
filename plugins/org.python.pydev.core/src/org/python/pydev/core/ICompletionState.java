@@ -188,4 +188,8 @@ public interface ICompletionState extends ICompletionCache {
 
     NoExceptionCloseable pushLookingFor(LookingFor lookingForInstancedVariable);
 
+    boolean getAcceptTypeshed();
+
+    void setAcceptTypeshed(boolean acceptTypeshed);
+
 }

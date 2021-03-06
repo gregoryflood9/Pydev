@@ -58,10 +58,8 @@ public class PyRenameGlobalProcess extends AbstractRenameWorkspaceRefactorProces
                 for (ASTEntry occurrence : localOccurrences) {
                     String fullRepresentationString = NodeUtils.getFullRepresentationString(occurrence.node);
                     List<IDefinition> foundDefs = PyRefactoringFindDefinition.findActualDefinition(request.getMonitor(),
-                            module, fullRepresentationString,
-                            null,
-                            occurrence.node.beginLine, occurrence.node.beginColumn, module.getNature(), completionCache,
-                            false);
+                            request.acceptTypeshed, module, fullRepresentationString, null, occurrence.node.beginLine,
+                            occurrence.node.beginColumn, module.getNature(), completionCache, false);
 
                     for (IDefinition def : foundDefs) {
                         IModule defModule = def.getModule();

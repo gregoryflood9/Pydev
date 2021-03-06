@@ -3450,4 +3450,14 @@ public class PythonCompletionWithoutBuiltinsTest extends CodeCompletionTestsBase
                 + "        with z.ope";
         requestCompl(s, s.length(), -1, new String[] { "open(name, mode, pwd)" });
     }
+
+    public void testTypeshed() throws Exception {
+        String s;
+        s = "" +
+                "def main():\n"
+                + "    from re import RegexFlag\n"
+                + "    RegexFlag.";
+        requestCompl(s, s.length(), -1, new String[] { "ASCII" });
+    }
+
 }

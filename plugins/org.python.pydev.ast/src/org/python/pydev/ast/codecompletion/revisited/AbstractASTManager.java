@@ -1143,7 +1143,7 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager {
                         String rep = NodeUtils.getFullRepresentationString(value);
                         try {
                             ArrayList<IDefinition> selected = new ArrayList<IDefinition>();
-                            PyRefactoringFindDefinition.findActualDefinition(null, module,
+                            PyRefactoringFindDefinition.findActualDefinition(null, state.getAcceptTypeshed(), module,
                                     rep,
                                     selected,
                                     value.beginLine, value.beginLine, state.getNature(),
@@ -1230,7 +1230,8 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager {
         ArrayList<IDefinition> selected = new ArrayList<IDefinition>();
         state.pushGetCompletionsUnpackingObject();
         try {
-            PyRefactoringFindDefinition.findActualDefinition(null, module, state.getActivationToken(),
+            PyRefactoringFindDefinition.findActualDefinition(null, state.getAcceptTypeshed(), module,
+                    state.getActivationToken(),
                     selected, state.getLine() + 1, state.getCol() + 1, state.getNature(), state);
             for (Iterator<IDefinition> iterator = selected.iterator(); iterator.hasNext();) {
                 IDefinition iDefinition = iterator.next();
@@ -1335,7 +1336,8 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager {
         } else {
             ArrayList<IDefinition> found = new ArrayList<>();
             // Pointing to some other place... let's follow it.
-            PyRefactoringFindDefinition.findActualDefinition(null, assignDefinition.module, assignDefinition.value,
+            PyRefactoringFindDefinition.findActualDefinition(null, state.getAcceptTypeshed(), assignDefinition.module,
+                    assignDefinition.value,
                     found, assignDefinition.line, assignDefinition.col, state.getNature(), state);
             for (IDefinition f : found) {
                 if (f instanceof Definition) {

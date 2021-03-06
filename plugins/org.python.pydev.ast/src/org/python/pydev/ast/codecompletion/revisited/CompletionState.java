@@ -61,6 +61,7 @@ public final class CompletionState implements ICompletionState {
     private boolean builtinsGotten = false;
     private boolean localImportsGotten = false;
     private boolean isInCalltip = false;
+    private boolean acceptTypeshed = true;
 
     private LookingFor lookingForInstance = LookingFor.LOOKING_FOR_INSTANCE_UNDEFINED;
     private TokensList tokenImportedModules;
@@ -429,6 +430,16 @@ public final class CompletionState implements ICompletionState {
     @Override
     public boolean getBuiltinsGotten() {
         return builtinsGotten;
+    }
+
+    @Override
+    public boolean getAcceptTypeshed() {
+        return acceptTypeshed;
+    }
+
+    @Override
+    public void setAcceptTypeshed(boolean acceptTypeshed) {
+        this.acceptTypeshed = acceptTypeshed;
     }
 
     @Override

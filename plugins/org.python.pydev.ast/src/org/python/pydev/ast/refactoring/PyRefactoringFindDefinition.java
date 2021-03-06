@@ -81,7 +81,8 @@ public class PyRefactoringFindDefinition {
                 int beginCol = request.getBeginCol() + 1;
                 IPythonNature pythonNature = request.nature;
 
-                PyRefactoringFindDefinition.findActualDefinition(request.getMonitor(), mod, tok, selected, beginLine,
+                PyRefactoringFindDefinition.findActualDefinition(request.getMonitor(), request.acceptTypeshed, mod, tok,
+                        selected, beginLine,
                         beginCol, pythonNature, completionCache);
             } catch (OperationCanceledException e) {
                 throw e;
@@ -157,10 +158,11 @@ public class PyRefactoringFindDefinition {
         return mod;
     }
 
-    public static void findActualDefinition(IProgressMonitor monitor, IModule mod, String tok,
+    public static void findActualDefinition(IProgressMonitor monitor, boolean acceptTypeshed, IModule mod, String tok,
             List<IDefinition> selected, int beginLine, int beginCol, IPythonNature pythonNature,
             ICompletionCache completionCache) throws CompletionRecursionException, Exception {
-        findActualDefinition(monitor, mod, tok, selected, beginLine, beginCol, pythonNature, completionCache, true);
+        findActualDefinition(monitor, acceptTypeshed, mod, tok, selected, beginLine, beginCol, pythonNature,
+                completionCache, true);
     }
 
     /**
@@ -183,7 +185,8 @@ public class PyRefactoringFindDefinition {
      *
      * @throws Exception
      */
-    public static List<IDefinition> findActualDefinition(IProgressMonitor monitor, IModule mod, String tok,
+    public static List<IDefinition> findActualDefinition(IProgressMonitor monitor, boolean acceptTypeshed, IModule mod,
+            String tok,
             List<IDefinition> foundDefinitions, int beginLine, int beginCol, IPythonNature pythonNature,
             ICompletionCache completionCache, boolean searchForMethodParameterFromParticipants)
             throws Exception, CompletionRecursionException {
@@ -193,6 +196,7 @@ public class PyRefactoringFindDefinition {
         }
         ICompletionState completionState = CompletionStateFactory.getEmptyCompletionState(tok, pythonNature,
                 beginLine - 1, beginCol - 1, completionCache);
+        completionState.setAcceptTypeshed(acceptTypeshed);
         IDefinition[] definitions = mod.findDefinition(completionState, beginLine, beginCol, pythonNature);
 
         if (monitor != null) {
