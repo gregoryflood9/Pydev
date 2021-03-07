@@ -66,7 +66,7 @@ public final class CompletionState implements ICompletionState, IModuleRequestSt
 
     private LookingFor lookingForInstance = LookingFor.LOOKING_FOR_INSTANCE_UNDEFINED;
     private TokensList tokenImportedModules;
-    private ICompletionCache completionCache;
+    private final ICompletionCache completionCache;
     private String fullActivationToken;
     private long initialMillis = 0;
     private long maxMillisToComplete;
@@ -182,7 +182,8 @@ public final class CompletionState implements ICompletionState, IModuleRequestSt
     }
 
     public CompletionState() {
-
+        this.activationToken = "";
+        this.completionCache = new CompletionCache();
     }
 
     /**

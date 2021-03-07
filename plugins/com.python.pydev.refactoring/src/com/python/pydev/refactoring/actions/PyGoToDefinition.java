@@ -215,7 +215,19 @@ public class PyGoToDefinition extends PyRefactorAction {
                 boolean acceptTypeshed = false;
                 boolean findInAdditionalInfo = false;
                 ItemPointer[] defs = findDefinition(pyEdit, acceptTypeshed, findInAdditionalInfo);
-                if (defs == null || defs.length == 0) {
+                boolean retry = defs == null || defs.length == 0;
+                if (!retry) {
+                    if (defs.length == 1) {
+                        if (defs[0].definition == null) {
+                            retry = true;
+                        } else if (defs[0].definition.module == null) {
+                            retry = true;
+                        } else if (defs[0].definition.module.getFile() == null) {
+                            retry = true;
+                        }
+                    }
+                }
+                if (retry) {
                     acceptTypeshed = true;
                     findInAdditionalInfo = true;
                     defs = findDefinition(pyEdit, acceptTypeshed, findInAdditionalInfo);
