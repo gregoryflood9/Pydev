@@ -15,6 +15,7 @@ import org.python.pydev.ast.codecompletion.revisited.modules.CompiledModule;
 import org.python.pydev.ast.codecompletion.shell.AbstractShell;
 import org.python.pydev.ast.codecompletion.shell.PythonShell;
 import org.python.pydev.ast.codecompletion.shell.PythonShellTest;
+import org.python.pydev.core.BaseModuleRequest;
 import org.python.pydev.core.IInterpreterManager;
 import org.python.pydev.core.IModule;
 import org.python.pydev.core.IPythonNature;
@@ -91,7 +92,7 @@ public class PythonCompletionWithBuiltinsPython3Test extends CodeCompletionTests
             shell = PythonShellTest.startShell();
         }
         AbstractShell.putServerShell(nature, AbstractShell.getShellId(), shell);
-        IModule builtinMod = nature.getBuiltinMod();
+        IModule builtinMod = nature.getBuiltinMod(new BaseModuleRequest(false));
         if (builtinMod == null) {
             throw new AssertionError("builtins not found");
         }

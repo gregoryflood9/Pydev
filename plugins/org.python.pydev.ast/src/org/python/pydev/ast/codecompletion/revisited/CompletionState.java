@@ -26,6 +26,7 @@ import org.python.pydev.core.ICompletionCache;
 import org.python.pydev.core.ICompletionState;
 import org.python.pydev.core.IDefinition;
 import org.python.pydev.core.IModule;
+import org.python.pydev.core.IModuleRequestState;
 import org.python.pydev.core.IPythonNature;
 import org.python.pydev.core.IToken;
 import org.python.pydev.core.NoExceptionCloseable;
@@ -37,7 +38,7 @@ import org.python.pydev.shared_core.structure.Tuple3;
 /**
  * @author Fabio Zadrozny
  */
-public final class CompletionState implements ICompletionState {
+public final class CompletionState implements ICompletionState, IModuleRequestState {
 
     private String activationToken;
     private int line = -1;

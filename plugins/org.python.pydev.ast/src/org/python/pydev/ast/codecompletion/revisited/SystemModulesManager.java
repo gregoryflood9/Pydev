@@ -35,6 +35,7 @@ import org.python.pydev.core.IGrammarVersionProvider;
 import org.python.pydev.core.IInterpreterInfo;
 import org.python.pydev.core.IInterpreterManager;
 import org.python.pydev.core.IModule;
+import org.python.pydev.core.IModuleRequestState;
 import org.python.pydev.core.IModulesManager;
 import org.python.pydev.core.IPythonNature;
 import org.python.pydev.core.ISystemModulesManager;
@@ -143,8 +144,9 @@ public final class SystemModulesManager extends ModulesManagerWithBuild implemen
     }
 
     @Override
-    public IModule getModule(String name, IPythonNature nature, boolean checkSystemManager, boolean dontSearchInit) {
-        return getModule(name, nature, dontSearchInit);
+    public IModule getModule(String name, IPythonNature nature, boolean checkSystemManager, boolean dontSearchInit,
+            IModuleRequestState moduleRequest) {
+        return getModule(name, nature, dontSearchInit, moduleRequest);
     }
 
     @Override
@@ -162,8 +164,8 @@ public final class SystemModulesManager extends ModulesManagerWithBuild implemen
     }
 
     @Override
-    public IModule getRelativeModule(String name, IPythonNature nature) {
-        return super.getModule(name, nature, true);
+    public IModule getRelativeModule(String name, IPythonNature nature, IModuleRequestState moduleRequest) {
+        return super.getModule(name, nature, true, moduleRequest);
     }
 
     /**
@@ -208,7 +210,7 @@ public final class SystemModulesManager extends ModulesManagerWithBuild implemen
     private transient Map<File, Long> predefinedFilesNotParsedToTimestamp;
 
     @Override
-    public AbstractModule getBuiltinModule(String name, boolean dontSearchInit) {
+    public AbstractModule getBuiltinModule(String name, boolean dontSearchInit, IModuleRequestState moduleRequest) {
         AbstractModule n = null;
 
         //check for supported builtins these don't have files associated.
@@ -370,24 +372,26 @@ public final class SystemModulesManager extends ModulesManagerWithBuild implemen
      * In the system modules manager, we also have to check for the builtins
      */
     @Override
-    public IModule getModule(String name, IPythonNature nature, boolean dontSearchInit) {
-        AbstractModule n = getBuiltinModule(name, dontSearchInit);
+    public IModule getModule(String name, IPythonNature nature, boolean dontSearchInit,
+            IModuleRequestState moduleRequest) {
+        AbstractModule n = getBuiltinModule(name, dontSearchInit, moduleRequest);
         if (n != null) {
             return n;
         }
 
-        return super.getModule(name, nature, dontSearchInit);
+        return super.getModule(name, nature, dontSearchInit, moduleRequest);
     }
 
     @Override
-    public IModule getModuleWithoutBuiltins(String name, IPythonNature nature, boolean dontSearchInit) {
-        return super.getModule(name, nature, dontSearchInit);
+    public IModule getModuleWithoutBuiltins(String name, IPythonNature nature, boolean dontSearchInit,
+            IModuleRequestState moduleRequest) {
+        return super.getModule(name, nature, dontSearchInit, moduleRequest);
     }
 
     @Override
     public Tuple<IModule, IModulesManager> getModuleAndRelatedModulesManager(String name, IPythonNature nature,
-            boolean checkSystemManager, boolean dontSearchInit) {
-        IModule module = this.getModule(name, nature, checkSystemManager, dontSearchInit);
+            boolean checkSystemManager, boolean dontSearchInit, IModuleRequestState moduleRequest) {
+        IModule module = this.getModule(name, nature, checkSystemManager, dontSearchInit, moduleRequest);
         if (module != null) {
             return new Tuple<IModule, IModulesManager>(module, this);
         }

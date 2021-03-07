@@ -58,7 +58,7 @@ public class PyRefactoringFindDefinition {
      * @throws CompletionRecursionException
      * @throws BadLocationException
      */
-    public static String[] findActualDefinition(RefactoringRequest request, CompletionCache completionCache,
+    public static String[] findActualDefinition(RefactoringRequest request, ICompletionState completionCache,
             List<IDefinition> selected) throws CompletionRecursionException, BadLocationException {
         //ok, let's find the definition.
         request.getMonitor().beginTask("Find actual definition", 5);
@@ -82,8 +82,7 @@ public class PyRefactoringFindDefinition {
                 IPythonNature pythonNature = request.nature;
 
                 PyRefactoringFindDefinition.findActualDefinition(request.getMonitor(), request.acceptTypeshed, mod, tok,
-                        selected, beginLine,
-                        beginCol, pythonNature, completionCache);
+                        selected, beginLine, beginCol, pythonNature, completionCache);
             } catch (OperationCanceledException e) {
                 throw e;
             } catch (CompletionRecursionException e) {
@@ -186,8 +185,7 @@ public class PyRefactoringFindDefinition {
      * @throws Exception
      */
     public static List<IDefinition> findActualDefinition(IProgressMonitor monitor, boolean acceptTypeshed, IModule mod,
-            String tok,
-            List<IDefinition> foundDefinitions, int beginLine, int beginCol, IPythonNature pythonNature,
+            String tok, List<IDefinition> foundDefinitions, int beginLine, int beginCol, IPythonNature pythonNature,
             ICompletionCache completionCache, boolean searchForMethodParameterFromParticipants)
             throws Exception, CompletionRecursionException {
 
@@ -214,8 +212,7 @@ public class PyRefactoringFindDefinition {
             if (definition instanceof Definition) {
                 Definition d = (Definition) definition;
                 doAdd = !findActualTokenFromImportFromDefinition(pythonNature, tok, foundDefinitions, d,
-                        completionCache,
-                        searchForMethodParameterFromParticipants);
+                        completionState, searchForMethodParameterFromParticipants);
             }
             if (monitor != null && monitor.isCanceled()) {
                 return foundDefinitions;
@@ -242,7 +239,7 @@ public class PyRefactoringFindDefinition {
      * @throws Exception
      */
     private static boolean findActualTokenFromImportFromDefinition(IPythonNature nature, String tok,
-            List<IDefinition> selected, Definition d, ICompletionCache completionCache,
+            List<IDefinition> selected, Definition d, ICompletionState completionCache,
             boolean searchForMethodParameterFromParticipants) throws Exception {
         boolean didFindNewDef = false;
 

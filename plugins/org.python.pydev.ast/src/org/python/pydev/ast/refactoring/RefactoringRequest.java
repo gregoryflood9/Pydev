@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension4;
-import org.python.pydev.ast.codecompletion.revisited.CompletionCache;
 import org.python.pydev.ast.codecompletion.revisited.modules.AbstractModule;
 import org.python.pydev.ast.codecompletion.revisited.modules.SourceModule;
 import org.python.pydev.ast.interpreter_managers.InterpreterManagersAPI;
+import org.python.pydev.core.ICompletionState;
 import org.python.pydev.core.IDefinition;
 import org.python.pydev.core.IModule;
 import org.python.pydev.core.IPyEdit;
@@ -395,7 +395,7 @@ public class RefactoringRequest extends DecoratableObject {
 
     }
 
-    public List<IDefinition> findActualDefinitions(CompletionCache completionCache) {
+    public List<IDefinition> findActualDefinitions(ICompletionState completionCache) {
         if (this.actualDefinitions == null) {
             List<IDefinition> actualDefinitions = new ArrayList<IDefinition>();
             try {

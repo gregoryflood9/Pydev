@@ -37,6 +37,7 @@ import org.python.pydev.core.IInterpreterInfo;
 import org.python.pydev.core.IInterpreterManager;
 import org.python.pydev.core.IInterpreterManagerListener;
 import org.python.pydev.core.IModule;
+import org.python.pydev.core.IModuleRequestState;
 import org.python.pydev.core.IPythonNature;
 import org.python.pydev.core.IPythonPathNature;
 import org.python.pydev.core.ISystemModulesManager;
@@ -95,7 +96,7 @@ public abstract class AbstractInterpreterManager implements IInterpreterManager 
     }
 
     @Override
-    public TokensList getBuiltinCompletions(String projectInterpreterName) {
+    public TokensList getBuiltinCompletions(String projectInterpreterName, IModuleRequestState moduleRequest) {
         //Cache with the internal name.
         projectInterpreterName = getInternalName(projectInterpreterName);
         if (projectInterpreterName == null) {
@@ -105,7 +106,7 @@ public abstract class AbstractInterpreterManager implements IInterpreterManager 
         TokensList toks = this.builtinCompletions.get(projectInterpreterName);
 
         if (toks == null || toks.size() == 0) {
-            IModule builtMod = getBuiltinMod(projectInterpreterName);
+            IModule builtMod = getBuiltinMod(projectInterpreterName, moduleRequest);
             if (builtMod != null) {
                 toks = builtMod.getGlobalTokens();
                 this.builtinCompletions.put(projectInterpreterName, toks);
@@ -118,7 +119,7 @@ public abstract class AbstractInterpreterManager implements IInterpreterManager 
     }
 
     @Override
-    public IModule getBuiltinMod(String projectInterpreterName) {
+    public IModule getBuiltinMod(String projectInterpreterName, IModuleRequestState moduleRequest) {
         //Cache with the internal name.
         projectInterpreterName = getInternalName(projectInterpreterName);
         if (projectInterpreterName == null) {
@@ -133,10 +134,10 @@ public abstract class AbstractInterpreterManager implements IInterpreterManager 
             InterpreterInfo interpreterInfo = this.getInterpreterInfo(projectInterpreterName, null);
             ISystemModulesManager modulesManager = interpreterInfo.getModulesManager();
 
-            mod = modulesManager.getBuiltinModule("__builtin__", false);
+            mod = modulesManager.getBuiltinModule("__builtin__", false, moduleRequest);
             if (mod == null) {
                 //Python 3.0 has builtins and not __builtin__
-                mod = modulesManager.getBuiltinModule("builtins", false);
+                mod = modulesManager.getBuiltinModule("builtins", false, moduleRequest);
             }
             if (mod != null) {
                 builtinMod.put(projectInterpreterName, mod);
